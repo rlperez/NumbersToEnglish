@@ -21,13 +21,13 @@ class NumbersToEnglishTest {
     @Test
     fun hundredsDigitTest() {
         val converter = NumbersToEnglish()
-        assertEquals("five hundred twenty three", converter.convert(523))
+        assertEquals("five hundred and twenty three", converter.convert(523))
     }
 
     @Test
     fun thousandsDigitTest() {
         val converter = NumbersToEnglish()
-        assertEquals("nine thousand nine hundred twenty three", converter.convert(9923))
+        assertEquals("nine thousand nine hundred and twenty three", converter.convert(9923))
     }
 
 }
