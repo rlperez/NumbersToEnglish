@@ -1,10 +1,9 @@
 package edu.rlperez
 
-import NumbersToEnglish
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class HelloTest {
+class NumbersToEnglishTest {
     @Test
     fun singleDigitTest() {
         val converter = NumbersToEnglish()
