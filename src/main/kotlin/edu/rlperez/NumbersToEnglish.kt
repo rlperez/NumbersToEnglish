@@ -1,14 +1,14 @@
 package edu.rlperez
 
+import kotlin.math.abs
+
 class NumbersToEnglish {
     val words = arrayOf(
         arrayOf(
             "zero", "one", "two",
             "three", "four", "five",
-            "six", "seven", "eight", "nine"
-        ),
-        arrayOf(
-            "", "ten", "eleven", "twelve",
+            "six", "seven", "eight", "nine",
+            "ten", "eleven", "twelve",
             "thirteen", "fourteen",
             "fifteen", "sixteen",
             "seventeen", "eighteen", "nineteen"
@@ -24,15 +24,30 @@ class NumbersToEnglish {
         return if (number == 0)
             words[0][0]
         else {
-            var posNum = Math.abs(number)
+            var posNum = abs(number)
             val arr = IntArray(4)
             for (i in 0..3) {
                 arr[i] = posNum % 1000
                 posNum /= 1000
             }
 
-            arr.joinToString(" ") { i -> threeDigitGroupToEnglish(i) }
-                .trim()
+            val threeDigitGroups = arr.map { i -> threeDigitGroupToEnglish(i) }
+            var result = threeDigitGroups[0]
+            var appendAnd = (arr[0] in 1..99)
+            for (i in 1..3) {
+                if (arr[i] != 0) {
+                    val prefix = threeDigitGroups[i] + " " + words[2][i] + " "
+
+                    if (result.isNotEmpty()) {
+                        if (appendAnd) result += " and "
+                        appendAnd = false
+                    }
+
+                    result = prefix + result
+                }
+            }
+
+            return result.trim()
         }
     }
 
@@ -41,7 +56,7 @@ class NumbersToEnglish {
         val hundreds = i / 100
         val tensUnits = i % 100
         if (hundreds != 0) {
-            text += words[0][hundreds] + " " + words[3][0]
+            text += words[0][hundreds] + " " + words[2][0]
             if (tensUnits != 0)
                 text += " and "
         }
@@ -62,12 +77,13 @@ class NumbersToEnglish {
 
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val converter = NumbersToEnglish()
     var input = ""
-    while (input.toUpperCase() == "Q") {
+    while (input.toUpperCase() != "Q") {
         print("Enter a positive integer number or Q to exit: ")
         input = readLine().orEmpty()
+        if (input.toUpperCase() == "Q") break
         if (input.isNotBlank()) println(converter.convert(input.toInt()))
     }
 }
