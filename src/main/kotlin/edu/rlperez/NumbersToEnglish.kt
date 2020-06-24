@@ -3,7 +3,7 @@ package edu.rlperez
 import kotlin.math.abs
 
 class NumbersToEnglish {
-    val words = arrayOf(
+    private val words = arrayOf(
         arrayOf(
             "zero", "one", "two",
             "three", "four", "five",
@@ -26,7 +26,7 @@ class NumbersToEnglish {
         else {
             var posNum = abs(number)
             val arr = IntArray(4)
-            for (i in 0..3) {
+            (0..3).forEach { i ->
                 arr[i] = posNum % 1000
                 posNum /= 1000
             }
@@ -34,7 +34,7 @@ class NumbersToEnglish {
             val threeDigitGroups = arr.map { i -> threeDigitGroupToEnglish(i) }
             var result = threeDigitGroups[0]
             var appendAnd = (arr[0] in 1..99)
-            for (i in 1..3) {
+            (1..3).forEach { i ->
                 if (arr[i] != 0) {
                     val prefix = threeDigitGroups[i] + " " + words[2][i] + " "
 
